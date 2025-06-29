@@ -32,15 +32,15 @@ const MainPage = ({ sections, setCurrentPage, menuVisible }) => {
         }}
       />
 
-      {/* Logo - Much Smaller */}
+      {/* Logo - Responsive Size */}
       <div 
         id="agora-logo-container"
         style={{
           position: 'absolute',
-          top: '50px',
-          left: '120px',
+          top: window.innerWidth <= 768 ? '20px' : '50px',
+          left: window.innerWidth <= 768 ? '20px' : '120px',
           zIndex: 20,
-          height: '110px',
+          height: window.innerWidth <= 768 ? '60px' : '110px',
           width: 'auto'
         }}
       >
@@ -49,9 +49,9 @@ const MainPage = ({ sections, setCurrentPage, menuVisible }) => {
           src="https://firebasestorage.googleapis.com/v0/b/doers-48e75.firebasestorage.app/o/agora%2Fagora-logo-y.png?alt=media&token=cf92ac15-d0a3-4a76-a81e-4b2dcd0210bb"
           alt="AGORA ASSET"
           style={{ 
-            height: '110px',
+            height: window.innerWidth <= 768 ? '60px' : '110px',
             width: 'auto',
-            maxHeight: '110px',
+            maxHeight: window.innerWidth <= 768 ? '60px' : '110px',
             display: 'block'
           }}
         />
@@ -61,40 +61,40 @@ const MainPage = ({ sections, setCurrentPage, menuVisible }) => {
       <div 
         style={{
           position: 'absolute',
-          bottom: '60px',
+          bottom: window.innerWidth <= 768 ? '20px' : '60px',
           right: '0px',
-          width: '680px',
+          width: window.innerWidth <= 768 ? '100vw' : '680px',
           backgroundColor: 'rgba(64, 64, 64, 0.3)',
-          padding: '90px 120px 180px 90px',
-          backdropFilter: 'blur(4px)',
+          padding: window.innerWidth <= 768 ? '30px 20px 180px 30px' : '90px 120px 180px 90px',
+          backdropFilter: 'blur(2px)',
           zIndex: 15
         }}
       >
         <h1 style={{
-          fontSize: '2.46rem',
+          fontSize: window.innerWidth <= 768 ? '1.5rem' : '2.48rem',
           fontWeight: 'bold',
           color: '#fff',
-          marginBottom: '1.34rem',
+          marginBottom: window.innerWidth <= 768 ? '1rem' : '1.34rem',
           lineHeight: '1.2',
           textAlign: 'left'
         }}>
           We possess the <span style={{ fontStyle: 'italic' }}>vision</span> to{' '}
-          <span style={{ color: '#DAA520', fontStyle: 'italic' }}>redefine the future</span>.
+          <span style={{ color: '#dcaf15', fontStyle: 'italic' }}>redefine the future</span>.
         </h1>
         
         <p style={{
-          fontSize: '1.12rem',
+          fontSize: window.innerWidth <= 768 ? '1rem' : '1.12rem',
           color: '#fff',
-          marginBottom: '1.12rem',
+          marginBottom: window.innerWidth <= 768 ? '0.8rem' : '1.12rem',
           fontWeight: '500'
         }}>
           We don't follow markets—we create them.
         </p>
         
         <p style={{
-          fontSize: '1.01rem',
+          fontSize: window.innerWidth <= 768 ? '0.9rem' : '1.01rem',
           color: '#fff',
-          marginBottom: '1.12rem',
+          marginBottom: window.innerWidth <= 768 ? '0.8rem' : '1.12rem',
           lineHeight: '1.5'
         }}>
           Our global expertise spans international finance, strategic investments, 
@@ -102,7 +102,7 @@ const MainPage = ({ sections, setCurrentPage, menuVisible }) => {
         </p>
         
         <p style={{
-          fontSize: '1.01rem',
+          fontSize: window.innerWidth <= 768 ? '0.9rem' : '1.01rem',
           color: '#fff',
           lineHeight: '1.5',
           marginBottom: '0px'
@@ -116,7 +116,7 @@ const MainPage = ({ sections, setCurrentPage, menuVisible }) => {
       {/* Navigation Menu */}
       <div style={{
         position: 'absolute',
-        bottom: '380px',
+        bottom: window.innerWidth <= 768 ? '250px' : '380px',
         right: '0px',
         zIndex: 20
       }}>
@@ -128,26 +128,22 @@ const MainPage = ({ sections, setCurrentPage, menuVisible }) => {
         }}>
           {sections && sections.map((section, index) => (
             <div
-              key={section.id}
-              style={{
-                opacity: menuVisible ? 1 : 0,
-                transform: menuVisible ? 'translateX(0px)' : 'translateX(30px)',
-                transition: `all 0.6s ease-out ${index * 0.2}s`
-              }}
+              key={`menu-item-${section.id}`}
+              className={menuVisible ? `menu-item-${index} animate` : `menu-item-${index}`}
             >
               <button
                 onClick={() => setCurrentPage(section.id)}
                 style={{
                   backgroundColor: 'rgba(255, 255, 255, 0.4)',
                   border: 'none',
-                  color: '#DC2626',
-                  fontSize: '1.2rem',
+                  color: '#dc2626',
+                  fontSize: window.innerWidth <= 768 ? '1rem' : '1.2rem',
                   fontWeight: 'bold',
                   textAlign: 'left',
                   cursor: 'pointer',
                   outline: 'none',
-                  padding: '16px 32px',
-                  width: '380px',
+                  padding: window.innerWidth <= 768 ? '12px 24px' : '16px 32px',
+                  width: window.innerWidth <= 768 ? '280px' : '380px',
                   backdropFilter: 'blur(2px)',
                   transition: 'all 0.3s ease'
                 }}
@@ -177,6 +173,31 @@ const MainPage = ({ sections, setCurrentPage, menuVisible }) => {
             transform: scale(1.15);
           }
         }
+        
+        @keyframes slideInFromRight {
+          0% {
+            opacity: 0;
+            transform: translateX(80px) scale(0.8);
+            filter: blur(3px);
+          }
+          100% {
+            opacity: 1;
+            transform: translateX(0px) scale(1);
+            filter: blur(0px);
+          }
+        }
+        
+        .menu-item-0, .menu-item-1, .menu-item-2, .menu-item-3, .menu-item-4 {
+          opacity: 0;
+          transform: translateX(80px) scale(0.8);
+          filter: blur(3px);
+        }
+        
+        .menu-item-0.animate { animation: slideInFromRight 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.1s both; }
+        .menu-item-1.animate { animation: slideInFromRight 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.25s both; }
+        .menu-item-2.animate { animation: slideInFromRight 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.4s both; }
+        .menu-item-3.animate { animation: slideInFromRight 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.55s both; }
+        .menu-item-4.animate { animation: slideInFromRight 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.7s both; }
         
         #agora-logo-container {
           height: 110px !important;

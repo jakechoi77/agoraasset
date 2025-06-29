@@ -118,17 +118,39 @@ const AgoraWebsite = () => {
   const loadSectionData = () => {
     try {
       const savedData = localStorage.getItem('agoraAssetSectionData');
+      console.log('로드된 섹션 데이터:', savedData); // 디버깅용
       if (savedData) {
-        return JSON.parse(savedData);
+        const parsedData = JSON.parse(savedData);
+        console.log('파싱된 섹션 데이터:', parsedData); // 디버깅용
+        return parsedData;
       }
     } catch (error) {
       console.error('데이터 불러오기 실패:', error);
     }
+    console.log('기본 섹션 데이터 사용'); // 디버깅용
     return defaultSectionData;
+  };
+
+  // 강제 데이터 새로고침 함수 추가
+  const forceReloadSectionData = () => {
+    const freshData = loadSectionData();
+    setSectionData(freshData);
+    console.log('섹션 데이터 강제 새로고침 완료:', freshData);
   };
 
   // 모든 섹션의 데이터를 통합 관리 (localStorage에서 불러오기)
   const [sectionData, setSectionData] = useState(loadSectionData);
+
+
+
+  // 컴포넌트 마운트 후 데이터 재확인
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      forceReloadSectionData();
+    }, 1000); // 1초 후 한 번 더 체크
+    
+    return () => clearTimeout(timer);
+  }, []);
 
   // 기본 뉴스 데이터
   const defaultNewsItems = [
@@ -731,7 +753,6 @@ const AgoraWebsite = () => {
             top: localToolbarPosition.y,
             zIndex: 1000,
             background: 'rgba(0, 0, 0, 0.95)',
-            backdropFilter: 'blur(15px)',
             border: '2px solid #8B1538',
             borderRadius: '15px',
             padding: '20px',
@@ -1401,16 +1422,7 @@ const AgoraWebsite = () => {
           position: 'relative',
           overflow: 'visible'
         }}>
-          {/* 오버레이 - 밝게 수정 */}
-          <div style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            background: 'linear-gradient(135deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.05) 100%)',
-            zIndex: 1
-          }} />
+          {/* 오버레이 제거 */}
 
           <div style={{ 
             position: 'relative', 
@@ -1429,60 +1441,60 @@ const AgoraWebsite = () => {
               transition: 'all 1.2s cubic-bezier(0.4, 0, 0.2, 1)',
               width: '100%',
               maxWidth: '1000px',
-              padding: window.innerWidth <= 768 ? '0 30px' : '0 60px'
-            }}>
-              <EditableTextBlock 
-                content={data.title}
-                field="title"
-                isTitle={true}
-              />
-            </div>
+                            padding: '0 80px'
+          }}>
+            <EditableTextBlock 
+              content={data.title}
+              field="title"
+              isTitle={true}
+            />
+          </div>
 
-            {/* 메인 콘텐츠 */}
+          {/* 메인 콘텐츠 */}
+          <div style={{
+            opacity: contentVisible ? 1 : 0,
+            transform: contentVisible ? 'translateY(0)' : 'translateY(40px)',
+            transition: 'all 1.5s cubic-bezier(0.4, 0, 0.2, 1)',
+            width: '100%',
+            maxWidth: '1100px',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            padding: '0 80px'
+          }}>
+            {/* 메인 콘텐츠 박스 */}
             <div style={{
-              opacity: contentVisible ? 1 : 0,
-              transform: contentVisible ? 'translateY(0)' : 'translateY(40px)',
-              transition: 'all 1.5s cubic-bezier(0.4, 0, 0.2, 1)',
+              background: 'transparent',
+              borderRadius: window.innerWidth <= 768 ? '15px' : '30px',
+              padding: window.innerWidth <= 768 ? '40px 0px' : '80px',
+              marginBottom: '40px',
               width: '100%',
-              maxWidth: '1100px',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              padding: window.innerWidth <= 768 ? '0 30px' : '0 100px'
+              maxWidth: '800px',
+              margin: '0 auto 40px auto',
+              boxSizing: 'border-box'
             }}>
-                             {/* 메인 콘텐츠 박스 */}
-               <div style={{
-                 background: 'transparent',
-                 borderRadius: window.innerWidth <= 768 ? '15px' : '30px',
-                 padding: window.innerWidth <= 768 ? '40px 0px' : '80px',
-                 marginBottom: '40px',
-                 width: '100%',
-                 maxWidth: '800px',
-                 margin: '0 auto 40px auto',
-                 boxSizing: 'border-box'
-               }}>
-                                 {/* 주요 제목 */}
-                 <div style={{ 
-                   marginBottom: '3rem',
-                   padding: window.innerWidth <= 768 ? '0 0px' : '0 40px'
-                 }}>
-                   <EditableTextBlock 
-                     content={data.mainTitle}
-                     field="mainTitle"
-                     isSubtitle={true}
-                   />
-                 </div>
+              {/* 주요 제목 */}
+              <div style={{ 
+                marginBottom: '3rem',
+                padding: '0 80px'
+              }}>
+                <EditableTextBlock 
+                  content={data.mainTitle}
+                  field="mainTitle"
+                  isSubtitle={true}
+                />
+              </div>
 
-                                 {/* 주요 내용 */}
-                 <div style={{ 
-                   marginBottom: '2.5rem',
-                   padding: window.innerWidth <= 768 ? '0 0px' : '0 40px'
-                 }}>
-                   <EditableTextBlock 
-                     content={data.mainContent}
-                     field="mainContent"
-                   />
-                 </div>
+              {/* 주요 내용 */}
+              <div style={{ 
+                marginBottom: '2.5rem',
+                padding: '0 80px'
+              }}>
+                <EditableTextBlock 
+                  content={data.mainContent}
+                  field="mainContent"
+                />
+              </div>
 
                                  
 
@@ -1513,8 +1525,7 @@ const AgoraWebsite = () => {
               cursor: 'pointer',
               transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
               boxShadow: '0 8px 25px rgba(139, 21, 56, 0.4)',
-              zIndex: 30,
-              backdropFilter: 'blur(10px)'
+              zIndex: 30
             }}
             onMouseEnter={(e) => {
               e.target.style.transform = 'translateX(-50%) translateY(-3px) scale(1.05)';
@@ -1544,16 +1555,7 @@ const AgoraWebsite = () => {
         position: 'relative',
         overflow: 'visible'
       }}>
-        {/* 오버레이 - 밝게 수정 */}
-        <div style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          background: 'linear-gradient(135deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.05) 100%)',
-          zIndex: 1
-        }} />
+        {/* 오버레이 제거 */}
 
         <div style={{ 
           position: 'relative', 
@@ -1572,7 +1574,7 @@ const AgoraWebsite = () => {
             transition: 'all 1.2s cubic-bezier(0.4, 0, 0.2, 1)',
             width: '100%',
             maxWidth: '1000px',
-            padding: window.innerWidth <= 768 ? '0 30px' : '0 60px'
+            padding: '0 80px'
           }}>
             <EditableTextBlock 
               content={data.title}
@@ -1591,7 +1593,7 @@ const AgoraWebsite = () => {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            padding: window.innerWidth <= 768 ? '0 30px' : '0 100px'
+            padding: '0 80px'
           }}>
             {/* 메인 콘텐츠 박스 */}
             <div style={{
@@ -1607,7 +1609,7 @@ const AgoraWebsite = () => {
               {/* 주요 제목 */}
               <div style={{ 
                 marginBottom: '3rem',
-                padding: window.innerWidth <= 768 ? '0 0px' : '0 40px'
+                padding: '0 80px'
               }}>
                 <EditableTextBlock 
                   content={data.mainTitle}
@@ -1619,7 +1621,7 @@ const AgoraWebsite = () => {
               {/* 주요 내용 */}
               <div style={{ 
                 marginBottom: '2.5rem',
-                padding: window.innerWidth <= 768 ? '0 0px' : '0 40px'
+                padding: '0 80px'
               }}>
                 <EditableTextBlock 
                   content={data.mainContent}
@@ -1635,21 +1637,20 @@ const AgoraWebsite = () => {
           onClick={() => setCurrentPage('main')}
           style={{
             position: 'fixed',
-            bottom: '40px',
+            bottom: window.innerWidth <= 768 ? '30px' : '40px',
             left: '50%',
             transform: 'translateX(-50%)',
             background: 'linear-gradient(135deg, #8B1538 0%, #A91D47 100%)',
             color: 'white',
             border: '1px solid rgba(255, 255, 255, 0.2)',
-            padding: '18px 35px',
+            padding: window.innerWidth <= 768 ? '16px 28px' : '18px 35px',
             borderRadius: '50px',
-            fontSize: '1.1rem',
+            fontSize: window.innerWidth <= 768 ? '1rem' : '1.1rem',
             fontWeight: 'bold',
             cursor: 'pointer',
             transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
             boxShadow: '0 8px 25px rgba(139, 21, 56, 0.4)',
-            zIndex: 30,
-            backdropFilter: 'blur(10px)'
+            zIndex: 30
           }}
           onMouseEnter={(e) => {
             e.target.style.transform = 'translateX(-50%) translateY(-3px) scale(1.05)';
@@ -1818,11 +1819,12 @@ const AgoraWebsite = () => {
         }}>
           <div style={{
             background: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)',
-            padding: '40px',
+            padding: window.innerWidth <= 768 ? '30px 20px' : '40px',
             borderRadius: '20px',
             border: '1px solid rgba(255, 255, 255, 0.1)',
             boxShadow: '0 25px 50px rgba(0, 0, 0, 0.5)',
-            minWidth: '400px',
+            minWidth: window.innerWidth <= 768 ? '320px' : '400px',
+            maxWidth: window.innerWidth <= 768 ? '90vw' : '400px',
             textAlign: 'center'
           }}>
             <h2 style={{
@@ -1937,6 +1939,8 @@ const AgoraWebsite = () => {
         />
       )}
       {currentPage !== 'main' && <SectionPage sectionId={currentPage} />}
+
+
     </div>
   );
 };
