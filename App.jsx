@@ -4,6 +4,8 @@ import { HexColorPicker } from 'react-colorful';
 import EditableText from './components/EditableText';
 import EditToolbar from './components/EditToolbar';
 import MainPage from './components/MainPage';
+// Firebase Firestore 임시 비활성화 (안정성 우선)
+// import { useFirestoreData, useNewsData } from './src/hooks/useFirestore';
 import './App.css';
 
 const AgoraWebsite = () => {
@@ -55,80 +57,149 @@ const AgoraWebsite = () => {
   const [textareaRef, setTextareaRef] = useState(null);
   const [editValue, setEditValue] = useState('');
 
-  // 기본 섹션 데이터 (초기값)
+  // 기본 섹션 데이터 (완성본)
   const defaultSectionData = {
     leadership: {
       title: 'leadership',
       bgImage: 'https://firebasestorage.googleapis.com/v0/b/doers-48e75.firebasestorage.app/o/agora%2Fsection-bg1.jpg?alt=media&token=3cc87cd8-8ff3-461a-a56b-072e33a7455a',
-      mainTitle: 'GLOBAL & DYNAMIC INVESTMENT MANAGEMENT',
-      mainContent: 'At Agora Asset, we thrive at the intersection of innovation, global vision, and strategic investment acumen. As pioneers in dynamic asset management, our expertise spans robust financial foundation, and cutting-edge strategies have earned us the confidence of the world\'s most sophisticated investors.',
+      mainTitle: '<span style="font-family: Myriad Pro, sans-serif">GLOBAL & DYNAMIC INVESTMENT MANAGEMENT</span>',
+      mainContent: '<br /><span style="font-size: 20px"><span style="font-family: Arno Pro Display, serif"><em><span style="font-size: 22px"><span style="font-family: Arno Pro Display, serif"><p style="line-height: 1.6;">At the heart of our solutions lies the power of global insights, driven by our extensive expertise in private equity, real estate funds, hedge fund strategies, and credit investments. Our foundation is built on robust intellectual prowess and substantial financial strength, empowering us to deliver exceptional outcomes. <br />\nWe pride ourselves on attracting top-tier talent and nurturing a culture that values innovation, independent thinking, and unwavering integrity. With a firm commitment backed by a strong capital base, we confidently deliver on our promises and create lasting value for our partners and clients.\n</span></span></em></span></span></span></span>\n<br />\n\n<img src="https://firebasestorage.googleapis.com/v0/b/doers-48e75.firebasestorage.app/o/agora%2Fdavid-pic30.png?alt=media&token=259e29b3-6865-4415-97c2-f53a9afde131" alt="삽입된 이미지" style="max-width: 100%; height: auto; margin: 10px 0; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);" />\n\n<p style="line-height: 1.6;"><span style="font-family: Arno Pro Display, serif">At Agora Asset, we deeply understand the complexities of today\'s evolving global landscape.\nOur commitment is rooted in authenticity, strategic insight, and innovative thinking. \nWith a solid foundation built on trust, financial strength, and genuine partnership,\nwe strive to meet the unique goals of each investor we serve.<br /><br />\nIn an environment marked by economic and geopolitical shifts, we believe in the power of agility, \nregional expertise, and meticulous bottom-up analysis. <br />Agora Asset leverages these strengths to navigate uncertainties, uncover opportunities, <br />and deliver meaningful, sustainable outcomes.<br /><br />\nOur ultimate goal is to build sincere, lasting relationships by consistently placing our clients\' best interests \nat the core of our decisions and actions.<br /><br />\nDavid C. Kim<br />\nChief Executive Office</span></span>r<br />\nAgora Asset Inc.</span></span></span></span></span>\n<br /><br /><br /><br /></span>\n<img src="https://firebasestorage.googleapis.com/v0/b/doers-48e75.firebasestorage.app/o/agora%2Fagora-logo-ys.png?alt=media&token=aa0f1429-0a24-4227-b764-8b2051a59b6e" alt="삽입된 이미지" style="max-width: 100%; height: auto; margin: 10px 0; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);" />\n<br /><br />\n<span style="font-family: Myriad Pro, sans-serif"><span style="font-size: 14px"><p style="line-height: 1.4;"><span style="color: #800000"><strong><span style="font-family: Myriad Pro, sans-serif"><span style="font-size: 20px">AGORA ASSET INC. – EXECUTIVE TEAM</span></strong></span><br />\n<span style="font-size: 14px"><span style="font-family: Myriad Pro, sans-serif"><strong>DAVID C. KIM</strong> <br />Chief Executive Officer / Chairman, Korea\n<br />•\tUniversity of Southern California (USC)\n<br />•\tFounder, Inglewood Trust LLC; Advisor, Global Jewish Funds (Asia Pacific)\n<br />•\tSpecialist in bond transactions, global financial brokerage, and commodities (DKI Investment)\n<br />•\tPreviously ExxonMobil Petroleum Finance Department; CEO, Unicor Inc., Korea<br />\n<strong>KENNETH RO</strong> <br />Senior Managing Director & Chief Financial Officer, USA\n<br />•\tBachelor of Science in Finance, University of Southern California\n<br />•\tFormer Vice President at Deutsche Bank, Morgan Stanley, UBS<br />\n<strong>CHANG SEON SHIN</strong> <br />Chief Legal Officer, Legal & Compliance, Korea\n<br />•\tDoctor of Jurisprudence (Dr. Jur.), University of Hamburg, Germany\n<br />•\tFormer Member, Securities Supervisory Board, Korea\n<br />•\tExpert Advisor, Korea Securities and Exchange Commission\n<br />•\tFormer Dean, College of Law, Chonnam National University<br />\n<strong>RUSSELL KENT RAMAGE MILES</strong> <br />Senior Managing Director, Private Equity Finance, Singapore\n<br />•\tMCS-DS (Hons.), Stanford University\n<br />•\tBBA, LL.B (Hons.) Law with Business, King\'s College London\n<br />•\tExperienced in oil exploration seismic systems; financial business consultant<br />\n<strong>ZUHRI SUKRI </strong><br />Senior Managing Director, Business Relationship, Singapore\n<br />•\tFormerly with World Airways, United Airlines, Singapore Airlines\n<br />•\tSpecialist in crude oil, petrochemical sectors, private equity finance<br />\n<strong>HENRY GOH</strong> <br />Senior Managing Director, Private Equity Finance, Singapore\n<br />•\tRoyal Military Academy Sandhurst, UK\n<br />•\tFormer roles at Huawei Marine Networks, 3A Capital Ltd.\n<br />•\tFinancial business advisor and consultant<br />\n<strong>KYLE OH </strong><br />Managing Director, Private Equity Finance, USA\n<br />•\tBusiness Degree, San Francisco State University\n<br />•\tExperienced with GMA International Trading, BJ Global Advisors, GF Asset Advisors, AIG<br />\n<strong>JAKE H. CHOI </strong><br />Managing Director, Marketing & Communications, USA\n<br />•\tColumbia University; Academy of Art, San Francisco\n<br />•\tFormer roles at Leo Burnett Chicago, Daehong Communications (Lotte Group, Korea)\n<br />•\tFormer VP/ECD at INNOVASIA Los Angeles<br />\n<strong>KEVIN MIN </strong><br />Managing Director, Real Estate & Business Planning, Korea<br />\n<strong>BYUNG SEOL MIN</strong> <br />Director, Business Relationship, Korea<br />\n<strong>CHRISTINA KIM</strong> <br />Director, Corporate Secretary & Accountant, USA\n<br />•\tUniversity of California, Riverside\n<br />•\tFormer roles at Southern Cal Law Firm, Bank of Hope, Los Angeles<br /><br />\n<span style="color: #8B1538"><strong><span style="font-size: 20px"><span style="font-family: Myriad Pro, sans-serif">AFFILIATE TEAM MEMBERS</span></span></strong></span><br />\n<strong>GENE S. DEVERAUX, SR.</strong> <br />Senior Advisor, Innovation & Technology\n<br />•\tOver 40 years of experience driving innovative technological solutions across diverse industries\n<br />•\tDeveloped proprietary hydro-electric generation systems without traditional dams\n<br />•\tExtensive network with global financial institutions including AAA insurers, currency traders, and major banks\n<br />•\tExpertise in sustainable energy solutions and structured project financing<br /><br />\n<strong>THOMAS MATHEW</strong> <br />Project Manager & Senior Advisor, Oil, Gas & Chemicals\n<br />•\tOver 50 years of experience in chemical engineering and managing EPC projects in petrochemical, refining, and LNG sectors\n<br />•\tPlayed key roles in major global projects including Reliance Jamnagar Petcoke Gasification\n<br />•\tManaged large-scale LNG plants, refinery expansions, offshore/onshore field developments, and pipeline construction\n<br />•\tExpert in end-to-end project lifecycle management, risk mitigation, and strategic consulting\n</span></span><br /><br /><br /><br /></span></span></span>',
       subContent: 'We passionately build lasting relationships, committed to placing our clients\' ambitions at the heart of every decision, paving the way for sustainable success and mutual growth.',
       footer: 'Leadership Excellence Since 2020',
       personName: 'David C. Kim',
       personTitle: 'Chief Executive Officer',
-      personImage: null
+      personImage: null,
+      mainTitle_style: {
+        bold: true,
+        italic: false,
+        underline: false,
+        color: '#8B1538',
+        fontSize: '20px',
+        fontFamily: 'inherit'
+      },
+      mainContent_style: {
+        bold: false,
+        italic: false,
+        underline: false,
+        color: '#333333',
+        fontSize: '16px',
+        fontFamily: 'inherit'
+      }
     },
     whatwedo: {
       title: 'what we do',
       bgImage: 'https://firebasestorage.googleapis.com/v0/b/doers-48e75.firebasestorage.app/o/agora%2Fsection-bg1.jpg?alt=media&token=3cc87cd8-8ff3-461a-a56b-072e33a7455a',
       mainTitle: 'COMPREHENSIVE INVESTMENT SOLUTIONS',
-      mainContent: 'Our diversified portfolio approach encompasses private equity, real estate development, hedge fund strategies, and innovative technology investments. We leverage cutting-edge analytics and global market insights to deliver superior returns for our clients.',
+      mainContent: '\n<em><span style="font-size: 22px"><span style="font-family: Arno Pro Display, serif">"Driven by a passion for innovation and a deep understanding of global markets, AGORA Asset delivers intelligent investment solutions, transformative urban projects, and future-ready technologies. From resilient portfolio strategies to cutting-edge AI platforms and visionary city planning, we are committed to creating lasting value and sustainable growth. With every initiative, we aim to bridge insight and impact—shaping a smarter, more connected world."</span></span></em>\n\n<img src="https://firebasestorage.googleapis.com/v0/b/doers-48e75.firebasestorage.app/o/agora%2Fwhatwedo70.png?alt=media&token=eb687712-5db2-497f-b1cf-2375e27c1d3a" alt="삽입된 이미지" style="max-width: 100%; height: auto; margin: 10px 0; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);opacity: 0.7;"/>\n\n<span style="color: #8B1538"><span style="font-size: 18px"><span style="font-family: Myriad Pro, sans-serif">\n<strong>AGORA ASSET</strong></span></span></span><br />\nAt AGORA Asset, we combine global perspective with local insight to create investment strategies that drive long-term growth and resilience.\u000bOur team of seasoned professionals manages diversified portfolios across multiple asset classes, delivering performance-driven results for both institutional and individual investors.\u000bWe believe in disciplined risk management, rigorous research, and a commitment to excellence in every investment decision.<br />\n<span style="color: #008000"><strong><span style="font-family: Myriad Pro, sans-serif"><span style="font-size: 18px">AGORA CITY PLAN</span></span></strong></span><br />\nAGORA City Plan is shaping the future of urban development by creating access to the world\'s most dynamic and high-potential regions.\u000bFrom master-planned cities to integrated infrastructure projects, we are committed to designing environments that foster innovation, sustainability, and global connectivity.\u000bOur developments are not just spaces—they are living ecosystems for future economies.<br />\n<span style="color: #800080"><strong><span style="font-size: 18px"><span style="font-family: Myriad Pro, sans-serif">AGORA AI</span></span></strong></span><br />\nAt the forefront of digital transformation, AGORA AI is dedicated to building intelligent, adaptive platforms that bridge the online and offline worlds.\u000bFocusing on the O2O (Online-to-Offline) economy, we develop cutting-edge AI technologies that enhance user experience, optimize operations, and unlock new value for platform-based businesses.\u000bWe envision a smarter, more seamless future—powered by innovation.<br />\n<span style="color: #ff00ff"><strong><span style="font-size: 18px"><span style="font-family: Myriad Pro, sans-serif">AGORA OIL REFINERY</span></span></strong></span><br />\nAs a strategic energy partner, AGORA Oil Refinery plays a vital role in powering Malaysia\'s ambitious growth trajectory.\u000bBy ensuring a stable, efficient fuel supply, we support the expansion of key sectors including aviation, logistics, infrastructure, and hospitality.\u000bDriven by a commitment to sustainability and national development, we are helping to lay the foundation for Malaysia\'s energy-secure future.\n<br /><br /><br /><br />\n',
       subContent: 'From emerging markets to established economies, we identify and capitalize on opportunities that others overlook, creating value through strategic partnerships and disciplined execution.',
       footer: 'Investment Excellence Since 2020',
       personName: 'Sarah M. Chen',
       personTitle: 'Chief Investment Officer',
-      personImage: null
+      personImage: null,
+      mainContent_style: {
+        bold: false,
+        italic: false,
+        underline: false,
+        color: '#333333',
+        fontSize: '16px',
+        fontFamily: 'inherit'
+      }
     },
     itp: {
       title: 'ITP & capital market',
       bgImage: 'https://firebasestorage.googleapis.com/v0/b/doers-48e75.firebasestorage.app/o/agora%2Fsection-bg1.jpg?alt=media&token=3cc87cd8-8ff3-461a-a56b-072e33a7455a',
-      mainTitle: 'INNOVATIVE TECHNOLOGY PARTNERSHIPS',
-      mainContent: 'We pioneer the integration of artificial intelligence and blockchain technologies into traditional investment frameworks. Our ITP division focuses on identifying and nurturing disruptive technologies that reshape entire industries.',
+      mainTitle: '<span style="font-family: Myriad Pro, sans-serif">MAXIMIZING RETURNS THROUGH STRUCTURED PRECISION</span>',
+      mainContent: '\n<em><p style="line-height: 1.4; font-size: 22px;"><span style="font-family: Arno Pro Display, serif">"In an environment marked by uncertainty and volatility, ITP offers a uniquely structured approach that prioritizes capital preservation while delivering consistent, high-yield performance. Through disciplined execution and predefined trade frameworks, investors gain access to a reliable, low-risk investment strategy designed for today\'s complex markets."</span></span></em>\n\n<img src="https://firebasestorage.googleapis.com/v0/b/doers-48e75.firebasestorage.app/o/agora%2Fagora-core-vision%20copy.jpg?alt=media&token=ed312aea-168d-456b-9732-4a16ffe85efd" alt="삽입된 이미지" style="max-width: 100%; height: auto; margin: 10px 0; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);" />\n\n<span style="color: #1f3038"><span style="font-size: 14px"><span style="font-family: Myriad Pro, sans-serif">\n<span style="font-size: 18px"><strong><span style="color: #008000">Global Capital Market Overview</span></strong><br />\n\nDespite short-term uncertainties, global capital markets continue to offer substantial opportunities for sophisticated investors seeking higher returns and diversification.<br />\n\n<strong><span style="color: #8B1538">Key Market Trends Supporting ITP Viability:</span></strong>\n<br />•\t<strong>Record Liquidity Among Institutions</strong>\nMajor central banks have maintained relatively accommodative liquidity policies to stimulate economic growth, ensuring deep capital pools and demand for yield-enhancing opportunities such as ITPs.\n<br />•\t<strong>Low-Yield Environment in Traditional Assets</strong>\nBond yields in developed markets remain historically low. As a result, institutional investors are increasingly turning to private, structured, and arbitrage-based opportunities to meet return objectives.\n<br />•\t<strong>Strong Demand for Alternative Investment Vehicles</strong>\nThe global alternatives market—including private equity, hedge funds, and structured programs like ITP—is projected to grow to $23.3 trillion by 2026 (Source: Preqin), reflecting rising institutional confidence in these vehicles.\n<br />•\t<strong>De-Risked Arbitrage Structure</strong>\nIn uncertain market conditions, investors prefer mechanisms that offer contractual profit guarantees and asset-backed structures, like the pre-arranged arbitrage model used in ITPs. The no-loss policy and capital protection elements are particularly attractive amid volatility.\n<br />•\t<strong>Tightening Bank Regulations Driving Institutional Interest</strong>\nBasel III and other global regulations have made traditional leverage and interbank trading less flexible, pushing capital into off-balance sheet, collateralized trades such as those facilitated by reputable ITP platforms.\n<br />\n\n<img src="https://firebasestorage.googleapis.com/v0/b/doers-48e75.firebasestorage.app/o/agora%2FKorea-finfncial-asset-size%20copy.jpg?alt=media&token=021d167b-641e-4141-bc04-7daf66737ed7" alt="삽입된 이미지" style="max-width: 100%; height: auto; margin: 10px 0; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);" />\n\n<strong>Strategic Advantage of ITP in the Current Market</strong><br />\n\nWith its capital efficiency, guaranteed exit strategy, and high-yield potential, the ITP model is exceptionally well-positioned to serve sovereign funds, family offices, and private wealth clients seeking low-risk, high-return alternatives.<br />\nBy participating in an ITP, investors are leveraging an ecosystem that functions independently of public market fluctuations, yet benefits from the very structure and liquidity of the global banking system.<br />\n\n<strong>Instrument Trade Program (ITP) Overview</strong><br />\nThe Instrument Trade Program (ITP) refers to a private, non-public investment strategy that leverages the controlled trade of high-value financial instruments—typically investment-grade bank debentures—in order to generate high-yield returns. These programs are not advertised to the public and are commonly accessible only to institutional or ultra-high-net-worth investors.\n<br /><br />\n<strong><span style="font-size: 18px"><span style="color: #8B1538">Key Highlights</span></span></strong>\n<br />•\t<strong>Minimum Investment Requirement: </strong>USD 100 million\n<br />•\t<strong>Trade Unit Size: </strong>USD 100 million per unit\n<br />•\t<strong>Expected Yield:</strong> Historically reported returns range between 80% and 400% annually\n<br />•\t<strong>Trade Frequency:</strong> Minimum of once per day or week, typically over a 40-week trading year\n<br />•\t<strong>Per-Trade Profit: </strong>Minimum of 2% per trade, with no recorded net losses due to pre-arranged contracts\n<br />\n<strong><span style="color: #8B1538">How the Program Works</span></strong>\n<br />The ITP operates through what is often called a Managed Bank Instrument Trading Platform, involving pre-negotiated purchase and sale agreements for bank-issued debt instruments.\n<br /><strong>Structure & Execution</strong>\n<br />•\t<strong>Pre-arranged Buyers and Sellers: </strong>The trading platform secures both the supply (seller) of instruments and the "exit buyer" in advance, with all pricing and terms contractually locked in.\n<br />•\t<strong>Arbitrage-Based Model: </strong>Instruments are purchased at a discount and resold at a higher, predetermined price, securing a fixed profit margin.\n<br />•\t<strong>Zero-Loss Policy: </strong>Due to these contractual safeguards, each completed trade guarantees a profit and eliminates the possibility of a loss.\n<br />\n<strong>Trader Operations & Credit Line</strong>\n<br />•\t<strong>Non-Depleting Line of Credit: </strong>Trades are conducted using a tradeable line-of-credit established in the client\'s name—not the trader\'s own assets.\n<br />•\t<strong>Bank-Capitalized Credit: </strong>These lines are supported by top-tier commercial banks and require fully verified collateral under strict custody and control protocols.\n<br />•\t<strong>Compliance & Procedures:</strong> Participating clients must adhere to the platform\'s stringent due diligence and compliance standards to meet the issuing bank\'s requirements.\n<br />\n<strong><span style="color: #8B1538">Important Notice</span></strong>\n<br />\n<strong>DISCLAIMER:</strong><br />\n<em>All projected trade returns are hypothetical models and not a guarantee of actual results. Trades are executed on a best-efforts basis, and returns are subject to factors such as market liquidity, supply of instruments, and evolving regulatory conditions.</em>\n<br /><br /><br /><br /></span></span></span></span></span>',
       subContent: 'Through strategic capital market operations, we facilitate seamless access to global liquidity while maintaining the highest standards of regulatory compliance and risk management.',
       footer: 'Technology Innovation Since 2020',
       personName: 'Michael R. Thompson',
       personTitle: 'Chief Technology Officer',
-      personImage: null
+      personImage: null,
+      mainTitle_style: {
+        bold: true,
+        italic: false,
+        underline: false,
+        color: '#8B1538',
+        fontSize: '20px',
+        fontFamily: 'inherit'
+      },
+      mainContent_style: {
+        bold: false,
+        italic: false,
+        underline: false,
+        color: '#333333',
+        fontSize: '16px',
+        fontFamily: 'inherit'
+      }
     },
     redevelopment: {
       title: 'R.E. development',
       bgImage: 'https://firebasestorage.googleapis.com/v0/b/doers-48e75.firebasestorage.app/o/agora%2Fsection-bg1.jpg?alt=media&token=3cc87cd8-8ff3-461a-a56b-072e33a7455a',
-      mainTitle: 'SUSTAINABLE REAL ESTATE DEVELOPMENT',
-      mainContent: 'Our real estate development division creates iconic properties that define urban landscapes. We focus on sustainable development practices, smart city integration, and community-centric design principles.',
+      mainTitle: 'FROM VISION TO LANDMARK: Cities Reimagined',
+      mainContent: '<br /><p style="line-height: 1.4; font-size: 24px;"><em><span style="font-family: Arno Pro Display, serif">"Our real estate vision extends beyond construction—we create world-class destinations that inspire lifestyle, elevate culture, and define tomorrow\'s urban identity. From luxury resorts to future-ready smart cities, each project is built with a commitment to environmental harmony, global connectivity, and enduring value. As a trusted partner for international investors, we shape iconic landscapes that stand the test of time."</span></em></span>\n\n<img src="https://firebasestorage.googleapis.com/v0/b/doers-48e75.firebasestorage.app/o/agora%2Fcity.jpg?alt=media&token=7a062c20-d616-41cf-a1dd-5e9f25b52fab" alt="삽입된 이미지" style="max-width: 100%; height: auto; margin: 10px 0; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);" />\n\n<p style="line-height: 1.6; font-size: 14px; font-family: \'Myriad Pro\', sans-serif;">\n  <span style="color: #0000ff;"><strong><span style="font-size: 18px">1. Smart Cities </span></strong></span></span></strong></span><br />\n<strong><em><span style="font-size: 18px"><span style="font-family: Arno Pro Display, serif">"Intelligent Cities, Designed for Tomorrow"</span></span></em></strong><br />\nWe lead the next evolution of urban living through integrated smart city development. By combining digital infrastructure, sustainable design, and mobility innovation, we create intelligent environments where people, technology, and opportunity connect seamlessly.\nOur smart cities are not only efficient—they are livable, resilient, and ready for the future.\n<br />\n<span style="color: #008000"><strong><strong><span style="font-size: 18px">2. Luxury Resorts</span></strong></strong></span><br />\n<span style="font-size: 18px"><span style="font-family: Arno Pro Display, serif"><strong><em>"Where Nature Meets Sophisticated Escape"</em></strong></span></span><br />\nOur resort developments redefine luxury through immersive experiences, exceptional design, and world-class hospitality. From coastal retreats to mountain sanctuaries, each destination is crafted to celebrate its natural surroundings while offering unparalleled comfort and exclusivity.\nWe don\'t just build resorts—we create sanctuaries of refinement, wellness, and cultural elegance.\n<br />\n<span style="font-size: 18px"><span style="font-family: Myriad Pro, sans-serif"><span style="color: #800000"><strong>3. Integrated Urban Developments</strong></span></span></span><br />\n<strong><em><span style="font-size: 18px"><span style="font-family: Arno Pro Display, serif">"Master-Planned Ecosystems for Future Growth"</span></span></em></strong><br />\nWe develop large-scale, mixed-use cities that integrate residential, commercial, cultural, and infrastructure elements into one unified vision.\nDesigned with long-term economic and social impact in mind, our integrated developments are vibrant ecosystems that support sustainable living, business innovation, and inclusive community life.\n<br /><br />\n\n<span style="color: #800000"><strong><span style="font-size: 24px"><span style="font-family: Myriad Pro, sans-serif">KOREA Project</span></span></strong></span>\n<img src="https://firebasestorage.googleapis.com/v0/b/doers-48e75.firebasestorage.app/o/agora%2FKorea-welcomes%20copy.jpg?alt=media&token=2c05212a-83d2-434d-923b-fa92602b6277" alt="삽입된 이미지" style="max-width: 100%; height: auto; margin: 10px 0; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);" />\n\n<em><strong><span style="font-family: Arno Pro Display, serif"><span style="font-size: 22px">Investing in the Future of Asia\'s Most Dynamic Market</span></span></strong></em><br />\nAgora Asset is leading the development of world-class smart cities, luxury resorts, senior wellness communities, and K-culture entertainment hubs across South Korea. These iconic projects blend advanced infrastructure with cultural innovation—positioning Korea as a global destination for living, leisure, and investment.\nBy combining local insight with global standards, we are creating high-impact developments that drive long-term value, attract international tourism, and unlock new economic potential. For visionary investors, Korea is not just a market—it\'s the next frontier.\n<br /><br />\n<span style="color: #800000"><strong><span style="font-size: 18px"><span style="font-family: Myriad Pro, sans-serif">Indonesia Smart Growth Initiative</span></span></strong></span><br />\n\n<img src="https://firebasestorage.googleapis.com/v0/b/doers-48e75.firebasestorage.app/o/agora%2FNew%20Capital%20city%20Indonesia%20web%201-1.png?alt=media&token=9077ae06-d038-443d-9ab7-896ae6a0321b" alt="삽입된 이미지" style="max-width: 100%; height: auto; margin: 10px 0; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);" />\n\n<strong><span style="font-size: 22px"><em><span style="font-family: Arno Pro Display, serif">Pioneering Sustainable Cities for a Changing Climate</span></span><br /></strong></em>\nAs Indonesia responds to climate change with bold urban planning, Agora Asset is contributing to the development of next-generation smart cities and integrated resort destinations in key relocation zones.\nOur projects combine resilient infrastructure, eco-conscious design, and technology-driven solutions to support Indonesia\'s vision for sustainable urban growth. By partnering on climate-adaptive developments, Agora Asset is helping shape a future-ready ecosystem that promotes environmental harmony, economic opportunity, and regional transformation.\nFor investors, this represents a unique gateway into Southeast Asia\'s most ambitious urban transition.\n<br />\n<img src="https://firebasestorage.googleapis.com/v0/b/doers-48e75.firebasestorage.app/o/agora%2Fnewcity7.png?alt=media&token=91bffd22-9d72-49bf-a5bc-555619e1b162" alt="삽입된 이미지" style="max-width: 100%; height: auto; margin: 10px 0; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);" />\n<br /><br /><br /><br />',
       subContent: 'From luxury residential complexes to cutting-edge commercial spaces, we transform visions into reality while maximizing long-term value for investors and communities alike.',
       footer: 'Development Excellence Since 2020',
       personName: 'Jennifer L. Park',
       personTitle: 'Head of Real Estate',
-      personImage: null
+      personImage: null,
+      mainContent_style: {
+        bold: false,
+        italic: false,
+        underline: false,
+        color: '#333333',
+        fontSize: '16px',
+        fontFamily: 'inherit'
+      },
+      mainTitle_style: {
+        bold: true,
+        italic: false,
+        underline: false,
+        color: '#8B1538',
+        fontSize: '20px',
+        fontFamily: 'inherit'
+      }
     },
     announcement: {
       title: 'announcement',
       bgImage: 'https://firebasestorage.googleapis.com/v0/b/doers-48e75.firebasestorage.app/o/agora%2Fsection-bg1.jpg?alt=media&token=3cc87cd8-8ff3-461a-a56b-072e33a7455a',
       mainTitle: 'LATEST NEWS & ANNOUNCEMENTS',
-      mainContent: 'Stay informed about our latest developments, strategic partnerships, and market insights. We regularly share updates on our investment activities and industry perspectives.',
+      mainContent: '<em><p style="line-height: 1.4; font-size: 22px;"><span style="font-family: Arno Pro Display, serif">Stay informed about our latest developments, strategic partnerships, and market insights. \nWe regularly share updates on our investment activities and industry perspectives.</span></span></em>\n\n<em><strong><span style="font-size: 20px"><span style="font-family: Myriad Pro, sans-serif"><span style="color: #800000">Achievements</span>\n</span></span></strong></em>\n<span style="font-size: 14px"><span style="font-family: Myriad Pro, sans-serif"><strong><span style="font-family: Myriad Pro, sans-serif">2025. 04.\tMOU for 50M USD investment from AMC, Indonesia\n2025. 03.\tMOU for 5B Euro investments from Aventulo, Germany\n2020. 06.\tInvestment contract with Chase Financial Group for USD 10B\n2020. 05.\tPre-report and approve the loan contract for money to Euro 5B Ministary of Strategy and Finance\n2019. 12.\tMOA sign up with ETNIK WAJA ADN. BHD & Agora asset Ltd. for PIPC, Johore Malaysia\n2019. 02.\tEstablished Agora Asset Ltd. Korea\n2018. 10.\tMOU with Marriot & PT Bali Unicor Indonesia Bali Hotel\n2018. 09.\tEstablished PT Bali Unicor Indonesia\n2015. 10\tPT Unicor Inc. Indonesia Corporation establishment\n2015. 07.\tNusa Penida Island development join venture contract in Bali\n2012. 03.\tHangang CINEPOLIS Investment briefing session and site confirmation\n2012. 02.\tMOU with Gimpo-si to attract 6B USD in foreign capital\n2008. 08. \tEstablished Unicor Inc. Korea\n2006. 10.\tEstablished Unicor Inc. USA\n</span></strong></span></span><br /><br /><br /><br />',
       subContent: 'Our commitment to transparency ensures that stakeholders are always informed about significant developments and opportunities within our organization.',
       footer: 'News & Updates 2024',
       personName: 'Robert K. Wilson',
       personTitle: 'Head of Communications',
-      personImage: null
+      personImage: null,
+      mainContent_style: {
+        bold: false,
+        italic: false,
+        underline: false,
+        color: '#333333',
+        fontSize: '16px',
+        fontFamily: 'inherit'
+      }
     }
   };
 
-  // localStorage에서 데이터 불러오기 함수
-  const loadSectionData = () => {
+  // localStorage에서 데이터를 동기적으로 불러오는 함수
+  const getInitialSectionData = () => {
     try {
       const savedData = localStorage.getItem('agoraAssetSectionData');
       if (savedData) {
-        return JSON.parse(savedData);
+        const parsedData = JSON.parse(savedData);
+        console.log('초기 로드: localStorage에서 불러온 데이터:', parsedData);
+        return parsedData;
+      } else {
+        console.log('초기 로드: 저장된 데이터가 없어 기본값 사용');
+        return defaultSectionData;
       }
     } catch (error) {
-      console.error('데이터 불러오기 실패:', error);
+      console.error('초기 데이터 불러오기 실패:', error);
+      return defaultSectionData;
     }
-    return defaultSectionData;
   };
 
-  // 모든 섹션의 데이터를 통합 관리 (localStorage에서 불러오기)
-  const [sectionData, setSectionData] = useState(loadSectionData);
+  // localStorage 방식으로 섹션 데이터 관리 (안정성 우선)
+  const [sectionData, setSectionData] = useState(getInitialSectionData);
 
   // 기본 뉴스 데이터
   const defaultNewsItems = [
@@ -152,20 +223,26 @@ const AgoraWebsite = () => {
     }
   ];
 
-  // localStorage에서 뉴스 데이터 불러오기
-  const loadNewsItems = () => {
+  // localStorage에서 뉴스 데이터를 동기적으로 불러오는 함수
+  const getInitialNewsData = () => {
     try {
       const savedNews = localStorage.getItem('agoraAssetNewsData');
       if (savedNews) {
-        return JSON.parse(savedNews);
+        const parsedNews = JSON.parse(savedNews);
+        console.log('초기 로드: localStorage에서 불러온 뉴스 데이터:', parsedNews);
+        return parsedNews;
+      } else {
+        console.log('초기 로드: 저장된 뉴스 데이터가 없어 기본값 사용');
+        return defaultNewsItems;
       }
     } catch (error) {
-      console.error('뉴스 데이터 불러오기 실패:', error);
+      console.error('초기 뉴스 데이터 불러오기 실패:', error);
+      return defaultNewsItems;
     }
-    return defaultNewsItems;
   };
 
-  const [newsItems, setNewsItems] = useState(loadNewsItems);
+  // localStorage 방식으로 뉴스 데이터 관리 (안정성 우선)
+  const [newsItems, setNewsItems] = useState(getInitialNewsData);
 
   // 섹션 정보 메모이제이션
   const sections = useMemo(() => [
@@ -268,6 +345,8 @@ const AgoraWebsite = () => {
   }, []);
 
   const updateContent = useCallback((sectionId, field, value) => {
+    console.log('updateContent 호출:', { sectionId, field, value });
+    
     setSectionData(prev => {
       const newData = {
         ...prev,
@@ -280,6 +359,13 @@ const AgoraWebsite = () => {
       // localStorage에 자동 저장
       try {
         localStorage.setItem('agoraAssetSectionData', JSON.stringify(newData));
+        console.log('localStorage에 저장 완료:', newData);
+        
+        // 저장 확인을 위한 검증
+        const savedCheck = localStorage.getItem('agoraAssetSectionData');
+        if (savedCheck) {
+          console.log('저장 검증 성공:', JSON.parse(savedCheck));
+        }
       } catch (error) {
         console.error('데이터 저장 실패:', error);
       }
@@ -292,6 +378,290 @@ const AgoraWebsite = () => {
     // 실제 편집 시 사용할 포맷팅 함수
     updateContent(sectionId, field, value);
   };
+
+  // 데이터 내보내기 함수들 추가
+  const exportData = useCallback(() => {
+    try {
+      const sectionData = localStorage.getItem('agoraAssetSectionData');
+      const newsData = localStorage.getItem('agoraAssetNewsData');
+      
+      // 디버깅을 위한 로그 출력
+      console.log('=== localStorage 디버깅 ===');
+      console.log('sectionData raw:', sectionData);
+      console.log('newsData raw:', newsData);
+      console.log('현재 sectionData state:', sectionData);
+      console.log('현재 newsItems state:', newsItems);
+      
+      const exportObj = {
+        timestamp: new Date().toISOString(),
+        sectionData: sectionData ? JSON.parse(sectionData) : null,
+        newsData: newsData ? JSON.parse(newsData) : null,
+        // 현재 state도 함께 포함
+        currentStateData: {
+          sectionData: sectionData,
+          newsItems: newsItems
+        }
+      };
+      
+      console.log('최종 export 객체:', exportObj);
+      
+      return JSON.stringify(exportObj, null, 2);
+    } catch (error) {
+      console.error('데이터 내보내기 실패:', error);
+      return null;
+    }
+  }, [sectionData, newsItems]);
+
+  const copyDataToClipboard = useCallback(() => {
+    const data = exportData();
+    if (data) {
+      navigator.clipboard.writeText(data).then(() => {
+        alert('📋 편집 데이터가 클립보드에 복사되었습니다!\n\n이 데이터를 개발자에게 전달하여 실제 코드에 반영할 수 있습니다.');
+      }).catch(err => {
+        console.error('클립보드 복사 실패:', err);
+        // 클립보드 API가 실패하면 수동으로 선택할 수 있는 모달 표시
+        showDataModalFunc(data);
+      });
+    } else {
+      alert('❌ 데이터 내보내기에 실패했습니다.');
+    }
+  }, [exportData]);
+
+  const downloadData = useCallback(() => {
+    const data = exportData();
+    if (data) {
+      const blob = new Blob([data], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+      a.href = url;
+      a.download = `agora-asset-data-${timestamp}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      alert('💾 편집 데이터가 다운로드되었습니다!\n\n이 파일을 개발자에게 전달하여 실제 코드에 반영할 수 있습니다.');
+    } else {
+      alert('❌데이터 다운로드에 실패했습니다.');
+    }
+  }, [exportData]);
+
+  const [showDataModal, setShowDataModal] = useState(false);
+  const [modalData, setModalData] = useState('');
+
+  const showDataModalFunc = useCallback((data) => {
+    setModalData(data);
+    setShowDataModal(true);
+  }, []);
+
+  // localStorage 강제 저장 함수 추가
+  const forceSaveToLocalStorage = useCallback(() => {
+    try {
+      // 현재 state를 localStorage에 강제 저장
+      localStorage.setItem('agoraAssetSectionData', JSON.stringify(sectionData));
+      localStorage.setItem('agoraAssetNewsData', JSON.stringify(newsItems));
+      
+      console.log('강제 저장 완료!');
+      console.log('저장된 sectionData:', sectionData);
+      console.log('저장된 newsItems:', newsItems);
+      
+      alert('✅ 현재 상태가 localStorage에 강제 저장되었습니다!\n이제 다시 다운로드해보세요.');
+    } catch (error) {
+      console.error('강제 저장 실패:', error);
+      alert('❌ 강제 저장에 실패했습니다.');
+    }
+  }, [sectionData, newsItems]);
+
+  // localStorage 디버그 함수 추가
+  const debugLocalStorage = useCallback(() => {
+    try {
+      const sectionDataRaw = localStorage.getItem('agoraAssetSectionData');
+      const newsDataRaw = localStorage.getItem('agoraAssetNewsData');
+      
+      console.log('=== localStorage 디버그 ===');
+      console.log('localStorage sectionData:', sectionDataRaw);
+      console.log('localStorage newsData:', newsDataRaw);
+      console.log('현재 state sectionData:', sectionData);
+      console.log('현재 state newsItems:', newsItems);
+      
+      // localStorage의 모든 키 확인
+      const allKeys = [];
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        allKeys.push({
+          key: key,
+          value: localStorage.getItem(key),
+          size: localStorage.getItem(key)?.length || 0
+        });
+      }
+      
+      console.log('=== localStorage 전체 키 목록 ===');
+      console.log(allKeys);
+      
+      const debugInfo = `
+📊 localStorage 고급 디버그 정보:
+
+🔍 기본 키 확인:
+- agoraAssetSectionData: ${sectionDataRaw ? '있음' : '없음'} (${sectionDataRaw ? sectionDataRaw.length : 0}자)
+- agoraAssetNewsData: ${newsDataRaw ? '있음' : '없음'} (${newsDataRaw ? newsDataRaw.length : 0}자)
+
+🔍 현재 브라우저 state:
+- sectionData 섹션 수: ${Object.keys(sectionData).length}개
+- newsItems 뉴스 수: ${newsItems.length}개
+
+🔍 localStorage 전체 키 목록:
+${allKeys.map(item => `- ${item.key}: ${item.size}자`).join('\n')}
+
+💡 혹시 다른 키에 데이터가 저장되어 있나요?
+브라우저 개발자도구(F12) → Console 탭에서 더 자세한 정보를 확인하세요!
+
+${!sectionDataRaw || !newsDataRaw ? '⚠️ 기본 키에 데이터가 없습니다!' : '✅ 기본 키에 데이터가 있습니다.'}
+      `;
+      
+      alert(debugInfo);
+         } catch (error) {
+       console.error('디버그 실패:', error);
+       alert('❌ 디버그에 실패했습니다.');
+     }
+   }, [sectionData, newsItems]);
+
+   // DOM에서 실제 데이터 추출 함수 추가
+   const extractRealDataFromDOM = useCallback(() => {
+     try {
+       // DOM에서 실제로 표시되는 텍스트들을 추출
+       const realData = {
+         timestamp: new Date().toISOString(),
+         note: "DOM에서 직접 추출한 실제 표시 데이터",
+         extractedData: {}
+       };
+
+       // 현재 페이지의 모든 텍스트 내용 추출
+       const allTextElements = document.querySelectorAll('h1, h2, h3, p, div');
+       const extractedTexts = [];
+       
+       allTextElements.forEach((element, index) => {
+         const text = element.innerText || element.textContent;
+         if (text && text.trim().length > 10) { // 의미있는 텍스트만
+           extractedTexts.push({
+             index: index,
+             tagName: element.tagName,
+             text: text.trim(),
+             className: element.className || ''
+           });
+         }
+       });
+
+       realData.extractedData = {
+         totalElements: extractedTexts.length,
+         texts: extractedTexts.slice(0, 50) // 처음 50개만
+       };
+
+       console.log('=== DOM에서 추출한 실제 데이터 ===');
+       console.log(realData);
+
+       const jsonData = JSON.stringify(realData, null, 2);
+       
+       // 클립보드 복사 시도
+       if (navigator.clipboard && navigator.clipboard.writeText) {
+         navigator.clipboard.writeText(jsonData).then(() => {
+           alert(`📋 DOM에서 추출한 실제 데이터가 클립보드에 복사되었습니다!
+           
+🔍 추출된 요소 수: ${extractedTexts.length}개
+💾 데이터 크기: ${jsonData.length}자
+
+이 데이터가 실제 브라우저에서 보이는 완성본입니다!`);
+         }).catch(err => {
+           console.error('클립보드 복사 실패:', err);
+           // 클립보드 실패시 모달로 표시
+           setModalData(jsonData);
+           setShowDataModal(true);
+           alert('클립보드 복사에 실패했습니다. 모달창에서 수동으로 복사해주세요!');
+         });
+       } else {
+         // 클립보드 API가 없으면 바로 모달 표시
+         setModalData(jsonData);
+         setShowDataModal(true);
+         alert('클립보드를 사용할 수 없습니다. 모달창에서 수동으로 복사해주세요!');
+       }
+
+     } catch (error) {
+       console.error('DOM 데이터 추출 실패:', error);
+       alert('❌ DOM 데이터 추출에 실패했습니다.');
+     }
+   }, []);
+
+   // 간단한 텍스트 데이터 표시 함수
+   const showSimpleTextData = useCallback(() => {
+     try {
+       console.log('=== 간단한 텍스트 데이터 추출 ===');
+       
+       // 현재 페이지의 주요 텍스트만 추출
+       const titles = Array.from(document.querySelectorAll('h1, h2')).map(el => el.textContent?.trim()).filter(Boolean);
+       const paragraphs = Array.from(document.querySelectorAll('p')).map(el => el.textContent?.trim()).filter(Boolean);
+       
+       const simpleData = {
+         titles: titles,
+         paragraphs: paragraphs.slice(0, 20), // 처음 20개 문단만
+         totalTitles: titles.length,
+         totalParagraphs: paragraphs.length
+       };
+       
+       console.log('제목들:', titles);
+       console.log('문단들:', paragraphs);
+       console.log('전체 데이터:', simpleData);
+       
+       const textData = `
+=== AGORA ASSET 웹사이트 실제 데이터 ===
+
+📋 제목 목록 (${titles.length}개):
+${titles.map((title, i) => `${i+1}. ${title}`).join('\n')}
+
+📝 문단 내용 (${paragraphs.length}개 중 처음 20개):
+${paragraphs.slice(0, 20).map((para, i) => `${i+1}. ${para.substring(0, 200)}...`).join('\n\n')}
+
+=== 데이터 요약 ===
+- 총 제목 수: ${titles.length}개
+- 총 문단 수: ${paragraphs.length}개
+- 추출 시간: ${new Date().toLocaleString()}
+       `;
+       
+       // 모달에 표시
+       setModalData(textData);
+       setShowDataModal(true);
+       
+       alert(`📊 간단한 텍스트 데이터를 추출했습니다!
+
+🔍 제목: ${titles.length}개
+📝 문단: ${paragraphs.length}개
+
+모달창에서 데이터를 확인하고 복사하세요!`);
+       
+     } catch (error) {
+       console.error('간단한 데이터 추출 실패:', error);
+       alert('❌ 데이터 추출에 실패했습니다.');
+     }
+   }, []);
+
+   // 완전한 데이터 리셋 및 재구축 함수
+   const resetAndRebuildData = useCallback(() => {
+     try {
+       // localStorage 완전 초기화
+       localStorage.removeItem('agoraAssetSectionData');
+       localStorage.removeItem('agoraAssetNewsData');
+       
+       // 현재 state를 기본값으로 리셋
+       setSectionData(defaultSectionData);
+       setNewsItems(defaultNewsItems);
+       
+       alert('✅ 데이터가 초기화되었습니다!\n페이지를 새로고침한 후 다시 편집해주세요.');
+       
+       // 페이지 새로고침
+       window.location.reload();
+     } catch (error) {
+       console.error('데이터 리셋 실패:', error);
+       alert('❌ 데이터 리셋에 실패했습니다.');
+     }
+   }, []);
 
   // 뉴스 관리 함수들 - localStorage 자동 저장 포함
   const addNews = useCallback(() => {
@@ -506,6 +876,13 @@ const AgoraWebsite = () => {
         }
       }, [content, data, field]);
 
+      // 편집 모드가 아닐 때 content 변경사항을 즉시 반영
+      useEffect(() => {
+        if (!isEditing) {
+          setLocalEditValue(content || '');
+        }
+      }, [content, isEditing]);
+
       const handleClick = (e) => {
         // 모바일에서는 편집 기능 비활성화
         const isMobile = window.innerWidth <= 768;
@@ -534,6 +911,8 @@ const AgoraWebsite = () => {
       };
 
       const handleSave = () => {
+        console.log('handleSave 호출:', { field, localEditValue, localCurrentStyle });
+        
         // 단순히 현재 편집 중인 텍스트를 저장
         handleTextEdit(field, localEditValue);
         
@@ -544,6 +923,10 @@ const AgoraWebsite = () => {
         setIsEditing(false);
         setLocalShowToolbar(false);
         setShowColorPicker(false);
+        
+        // 저장 완료 알림
+        console.log('저장 완료!');
+        alert('저장되었습니다!');
       };
 
 
@@ -1684,7 +2067,8 @@ const AgoraWebsite = () => {
           right: '20px', 
           zIndex: 1000, 
           display: 'flex', 
-          gap: '10px' 
+          gap: '10px',
+          flexWrap: 'wrap'
         }}>
           {/* 관리자 상태 표시 */}
           {isAdmin && (
@@ -1728,6 +2112,137 @@ const AgoraWebsite = () => {
             >
               {isEditMode ? '편집 완료' : '편집 모드'}
             </button>
+          )}
+          
+          {/* 데이터 내보내기 버튼들 - 관리자만 표시 */}
+          {isAdmin && (
+            <>
+              <button
+                onClick={debugLocalStorage}
+                style={{
+                  padding: '10px 20px',
+                  backgroundColor: '#F59E0B',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '8px',
+                  cursor: 'pointer',
+                  fontSize: '16px',
+                  fontWeight: 'bold',
+                  transition: 'all 0.3s ease'
+                }}
+                title="localStorage 상태 확인"
+              >
+                🔍 디버그
+              </button>
+              
+              <button
+                onClick={forceSaveToLocalStorage}
+                style={{
+                  padding: '10px 20px',
+                  backgroundColor: '#EF4444',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '8px',
+                  cursor: 'pointer',
+                  fontSize: '16px',
+                  fontWeight: 'bold',
+                  transition: 'all 0.3s ease'
+                }}
+                title="현재 상태를 localStorage에 강제 저장"
+              >
+                💾 강제저장
+              </button>
+              
+              <button
+                onClick={extractRealDataFromDOM}
+                style={{
+                  padding: '10px 20px',
+                  backgroundColor: '#10B981',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '8px',
+                  cursor: 'pointer',
+                  fontSize: '16px',
+                  fontWeight: 'bold',
+                  transition: 'all 0.3s ease'
+                }}
+                title="DOM에서 실제 표시 데이터 추출"
+              >
+                🎯 실제데이터
+              </button>
+              
+              <button
+                onClick={showSimpleTextData}
+                style={{
+                  padding: '10px 20px',
+                  backgroundColor: '#8B5CF6',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '8px',
+                  cursor: 'pointer',
+                  fontSize: '16px',
+                  fontWeight: 'bold',
+                  transition: 'all 0.3s ease'
+                }}
+                title="간단한 텍스트 데이터 추출"
+              >
+                📝 간단추출
+              </button>
+              
+              <button
+                onClick={resetAndRebuildData}
+                style={{
+                  padding: '10px 20px',
+                  backgroundColor: '#6B7280',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '8px',
+                  cursor: 'pointer',
+                  fontSize: '16px',
+                  fontWeight: 'bold',
+                  transition: 'all 0.3s ease'
+                }}
+                title="데이터 초기화 후 재시작"
+              >
+                🔄 리셋
+              </button>
+              
+              <button
+                onClick={copyDataToClipboard}
+                style={{
+                  padding: '10px 20px',
+                  backgroundColor: '#7C3AED',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '8px',
+                  cursor: 'pointer',
+                  fontSize: '16px',
+                  fontWeight: 'bold',
+                  transition: 'all 0.3s ease'
+                }}
+                title="편집한 데이터를 클립보드에 복사"
+              >
+                📋 복사
+              </button>
+              
+              <button
+                onClick={downloadData}
+                style={{
+                  padding: '10px 20px',
+                  backgroundColor: '#059669',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '8px',
+                  cursor: 'pointer',
+                  fontSize: '16px',
+                  fontWeight: 'bold',
+                  transition: 'all 0.3s ease'
+                }}
+                title="편집한 데이터를 파일로 다운로드"
+              >
+                💾 다운로드
+              </button>
+            </>
           )}
           
           {/* 로그아웃 버튼 */}
@@ -1922,6 +2437,116 @@ const AgoraWebsite = () => {
               fontStyle: 'italic'
             }}>
               힌트: Ctrl + Alt + A 키로 로그인 창을 열 수 있습니다
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 데이터 표시 모달 */}
+      {showDataModal && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100vw',
+          height: '100vh',
+          backgroundColor: 'rgba(0, 0, 0, 0.8)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 10001,
+          backdropFilter: 'blur(10px)'
+        }}>
+          <div style={{
+            background: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)',
+            padding: '40px',
+            borderRadius: '20px',
+            border: '1px solid rgba(255, 255, 255, 0.1)',
+            boxShadow: '0 25px 50px rgba(0, 0, 0, 0.5)',
+            maxWidth: '80vw',
+            maxHeight: '80vh',
+            overflow: 'auto',
+            textAlign: 'center'
+          }}>
+            <h2 style={{
+              color: '#fff',
+              marginBottom: '20px',
+              fontSize: '1.5rem',
+              fontWeight: 'bold'
+            }}>
+              📋 편집 데이터 복사
+            </h2>
+            
+            <p style={{
+              color: 'rgba(255, 255, 255, 0.8)',
+              marginBottom: '20px',
+              fontSize: '14px'
+            }}>
+              아래 데이터를 전체 선택(Ctrl+A)하고 복사(Ctrl+C)하세요:
+            </p>
+            
+            <textarea
+              value={modalData}
+              readOnly
+              style={{
+                width: '100%',
+                height: '300px',
+                padding: '15px',
+                fontSize: '12px',
+                fontFamily: 'monospace',
+                borderRadius: '10px',
+                border: '1px solid rgba(255, 255, 255, 0.2)',
+                background: 'rgba(0, 0, 0, 0.5)',
+                color: '#fff',
+                outline: 'none',
+                resize: 'vertical',
+                boxSizing: 'border-box'
+              }}
+              onClick={(e) => e.target.select()}
+            />
+            
+            <div style={{
+              marginTop: '20px',
+              display: 'flex',
+              gap: '15px',
+              justifyContent: 'center'
+            }}>
+              <button
+                onClick={() => {
+                  navigator.clipboard.writeText(modalData).then(() => {
+                    alert('클립보드에 복사되었습니다!');
+                    setShowDataModal(false);
+                  });
+                }}
+                style={{
+                  padding: '12px 25px',
+                  backgroundColor: '#7C3AED',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '10px',
+                  cursor: 'pointer',
+                  fontSize: '16px',
+                  fontWeight: 'bold'
+                }}
+              >
+                📋 클립보드에 복사
+              </button>
+              
+              <button
+                onClick={() => setShowDataModal(false)}
+                style={{
+                  padding: '12px 25px',
+                  backgroundColor: '#DC2626',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '10px',
+                  cursor: 'pointer',
+                  fontSize: '16px',
+                  fontWeight: 'bold'
+                }}
+              >
+                닫기
+              </button>
             </div>
           </div>
         </div>

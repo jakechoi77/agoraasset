@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "site": "agoraasset",
+    "site": "agora-jake",
     "public": "dist",
     "ignore": [
       "firebase.json",
